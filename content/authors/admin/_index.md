@@ -31,6 +31,9 @@ social:
 - icon: github
   icon_pack: fab
   link: https://github.com/lautarocantar
+- icon: linkedin
+  icon_pack: fa
+  link: https://www.linkedin.com/in/lautarocantar/
 superuser: false
 user_groups:
 - Researchers
