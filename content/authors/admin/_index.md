@@ -34,6 +34,9 @@ social:
 - icon: linkedin
   icon_pack: fab
   link: https://www.linkedin.com/in/lautarocantar/
+- icon: medium
+  icon_pack: fab
+  link: https://medium.com/@lautaro.cantar
 superuser: false
 user_groups:
 - Researchers
