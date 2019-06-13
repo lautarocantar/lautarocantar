@@ -14,8 +14,6 @@ slug: qué-son-los-radios-censales-y-para-qué-sirven
 subtitle: ''
 summary: ''
 tags:
-- radios censales
-- Tutorial
 authors: []
 ---
 
