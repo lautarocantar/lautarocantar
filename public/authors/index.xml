@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Authors on Academic</title>
+    <title>Authors on Lautaro Cantar</title>
     <link>/authors/</link>
-    <description>Recent content in Authors on Academic</description>
+    <description>Recent content in Authors on Lautaro Cantar</description>
     <generator>Source Themes Academic (https://sourcethemes.com/academic/)</generator>
     <language>en-us</language>
+    <copyright>&amp;copy; 2019</copyright>
     <lastBuildDate>Sun, 07 Apr 2019 00:00:00 +0000</lastBuildDate>
     
 	    <atom:link href="/authors/index.xml" rel="self" type="application/rss+xml" />
@@ -17,9 +18,11 @@
       <pubDate>Sun, 07 Apr 2019 00:00:00 +0000</pubDate>
       
       <guid>/authors/admin/</guid>
-      <description>&lt;p&gt;Nelson Bighetti is a professor of artificial intelligence at the Stanford AI Lab. His research interests include distributed robotics, mobile computing and programmable matter. He leads the Robotic Neurobiology group, which develops self-reconfiguring robots, systems of self-organizing robots, and mobile sensor networks.&lt;/p&gt;
+      <description>&lt;p&gt;I am currently working as a Data Analyst at the &lt;a href=&#34;www.argentina.gob.ar/interior&#34; target=&#34;_blank&#34;&gt;Ministry of the Interior, Public Works, and Housing&lt;/a&gt;. Previously I worked at &lt;a href=&#34;www.datos.gob.ar&#34; target=&#34;_blank&#34;&gt;Modernization Secretariat under the Chief of the Cabinet of Ministers&lt;/a&gt;, the Boston Area Research Initiative and The American City Coalition. I received my MS in Urban Informatics from Northeastern University (Boston, MA) and my BA in Economics from Universidad Nacional de La Plata.&lt;/p&gt;
 
-&lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed neque elit, tristique placerat feugiat ac, facilisis vitae arcu. Proin eget egestas augue. Praesent ut sem nec arcu pellentesque aliquet. Duis dapibus diam vel metus tempus vulputate.&lt;/p&gt;
+&lt;p&gt;My current work and research interests stand in the application of data science tools for making public policy decisions: how can we help policymakers make better public policies? I am also interested in data automatization, data visualization, data literacy and, basically, anything related to data!&lt;/p&gt;
+
+&lt;p&gt;Here you will find the projects I&amp;rsquo;m working or worked on as well as blog posts with tutorials or thoughts. Post can be either in  Spanish (mostly) or English.&lt;/p&gt;
 </description>
     </item>
     
