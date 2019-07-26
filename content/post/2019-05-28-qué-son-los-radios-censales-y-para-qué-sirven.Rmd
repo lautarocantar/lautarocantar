@@ -41,7 +41,7 @@ Actualmente Argentina se compone de un total de **51.408 radios censales**, dise
 
 El identificador de un radio censal es un código numérico único de 9 cifras. Este código **relaciona a diferentes unidades censales que pueden ordenarse jerárquicamente** de modo tal que unas contienen a las otras, aunque no en todos los casos. Si querés profundizar un poco en esta temática, te invitamos a leer nuestra [guía para la identificación y uso de entidades interoperables](https://datosgobar.github.io/paquete-apertura-datos/guia-interoperables/#guia-para-la-identificacion-y-uso-de-entidades-interoperables).
 
-<!-- ![Foto](gallery/radios_example.png) -->
+![](/post/2019-05-28-qué-son-los-radios-censales-y-para-qué-sirven_files/radios_example.png)
 
 El código del radio censal es el resultado de una concatenación de códigos. Tomemos como ejemplo el radio censal **064900302** del Partido de Lomas de Zamora:
 
