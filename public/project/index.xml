@@ -13,29 +13,54 @@
     
     
     <item>
-      <title>External Project</title>
-      <link>/project/external-project/</link>
+      <title>Address Locator Tool</title>
+      <link>/project/adl/</link>
       <pubDate>Wed, 27 Apr 2016 00:00:00 +0000</pubDate>
       
-      <guid>/project/external-project/</guid>
-      <description></description>
+      <guid>/project/adl/</guid>
+      <description>
+
+&lt;p&gt;&lt;strong&gt;Role&lt;/strong&gt;: Data analyst and Shinyapps developer&lt;/p&gt;
+
+&lt;p&gt;Massachusetts Department of Housing and Community Development (DHCD) is piloting a new payment standard scheme and hired me to redevelop the &amp;ldquo;Address Locator Tool&amp;rdquo; for them. This tool is a free open-source online tool that allows the voucher holders and counselors to have detailed information of an area before signing a lease.
+This tool has been developed using R, R Studio’s Shiny apps, GoogleMaps API, Walkscore API, and FCC API.&lt;/p&gt;
+
+&lt;p&gt;The tool is under development, but here you can find the &lt;a href=&#34;https://lautarocantar.shinyapps.io/app1/&#34; target=&#34;_blank&#34;&gt;beta version&lt;/a&gt; online.&lt;/p&gt;
+
+&lt;h2 id=&#34;background-information&#34;&gt;Background information:&lt;/h2&gt;
+
+&lt;p&gt;This project started while I was an Urban Data fellow at TACC and has been ongoing since June 2017.&lt;/p&gt;
+
+&lt;h3 id=&#34;mass-rental-housing-market-analysis-october-2017&#34;&gt;Mass Rental Housing Market Analysis (October 2017):&lt;/h3&gt;
+
+&lt;p&gt;DHCD contacted TACC to do a Rental Market Analysis to launch a project&amp;rsquo;s pilot program. We used and analyzed several information sources but, more importantly, we compared different public housing payment standard with current prices from the data collected from Craigslist.org. This report has been used to determine the region in which the pilot program (SNO Mass) is today being deployed.&lt;/p&gt;
+
+&lt;p&gt;I can not share the final report, but I can share this &lt;a href=&#34;Cantar, Lautaro - DHCD.pdf&#34; target=&#34;_blank&#34;&gt;short version of the report&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h3 id=&#34;mass-housing-locator-platform-april-2018-present&#34;&gt;Mass Housing Locator Platform (April 2018 - Present):&lt;/h3&gt;
+
+&lt;p&gt;At TACC I continued with the development of a free open-source online tool to help reduce some of the barriers low-income families face in using their housing voucher to access rental units in higher opportunity areas. The tool has two components:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;“Housing Locator Tool”, that allows renters to explore new areas and expand their search;&lt;/li&gt;
+&lt;li&gt;“Address Locator Tool” that allows the searchers to look for social and environmental indicators for a particular address.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;I presented this project at BARI’s Spring Conference 2018. Here you can find the &lt;a href=&#34;Mass Housing Tool - Presentation.pdf&#34; target=&#34;_blank&#34;&gt;slides&lt;/a&gt; and here you can find the &lt;a href=&#34;http://tamcc.org/mass-housing-tool/&#34; target=&#34;_blank&#34;&gt;online tool&lt;/a&gt;.&lt;/p&gt;
+</description>
     </item>
     
     <item>
-      <title>Internal Project</title>
-      <link>/project/internal-project/</link>
+      <title>Craigslist’s Rental Housing Infrastructure</title>
+      <link>/project/craigslist/</link>
       <pubDate>Wed, 27 Apr 2016 00:00:00 +0000</pubDate>
       
-      <guid>/project/internal-project/</guid>
-      <description>&lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis posuere tellus ac convallis placerat. Proin tincidunt magna sed ex sollicitudin condimentum. Sed ac faucibus dolor, scelerisque sollicitudin nisi. Cras purus urna, suscipit quis sapien eu, pulvinar tempor diam. Quisque risus orci, mollis id ante sit amet, gravida egestas nisl. Sed ac tempus magna. Proin in dui enim. Donec condimentum, sem id dapibus fringilla, tellus enim condimentum arcu, nec volutpat est felis vel metus. Vestibulum sit amet erat at nulla eleifend gravida.&lt;/p&gt;
+      <guid>/project/craigslist/</guid>
+      <description>&lt;p&gt;&lt;strong&gt;Role&lt;/strong&gt;: Data analyst and R developer&lt;/p&gt;
 
-&lt;p&gt;Nullam vel molestie justo. Curabitur vitae efficitur leo. In hac habitasse platea dictumst. Sed pulvinar mauris dui, eget varius purus congue ac. Nulla euismod, lorem vel elementum dapibus, nunc justo porta mi, sed tempus est est vel tellus. Nam et enim eleifend, laoreet sem sit amet, elementum sem. Morbi ut leo congue, maximus velit ut, finibus arcu. In et libero cursus, rutrum risus non, molestie leo. Nullam congue quam et volutpat malesuada. Sed risus tortor, pulvinar et dictum nec, sodales non mi. Phasellus lacinia commodo laoreet. Nam mollis, erat in feugiat consectetur, purus eros egestas tellus, in auctor urna odio at nibh. Mauris imperdiet nisi ac magna convallis, at rhoncus ligula cursus.&lt;/p&gt;
+&lt;p&gt;Craigslist.org is a large source of information for many different items, but especially, for rental housing. At BARI and TACC, I built an infrastructure to collect, store, and share this information for all rental housing in the state of Massachusetts. This information has the potential to provide a deeper analysis of the rental market and, thus, change or redirect some public policies about affordable housing.&lt;/p&gt;
 
-&lt;p&gt;Cras aliquam rhoncus ipsum, in hendrerit nunc mattis vitae. Duis vitae efficitur metus, ac tempus leo. Cras nec fringilla lacus. Quisque sit amet risus at ipsum pharetra commodo. Sed aliquam mauris at consequat eleifend. Praesent porta, augue sed viverra bibendum, neque ante euismod ante, in vehicula justo lorem ac eros. Suspendisse augue libero, venenatis eget tincidunt ut, malesuada at lorem. Donec vitae bibendum arcu. Aenean maximus nulla non pretium iaculis. Quisque imperdiet, nulla in pulvinar aliquet, velit quam ultrices quam, sit amet fringilla leo sem vel nunc. Mauris in lacinia lacus.&lt;/p&gt;
-
-&lt;p&gt;Suspendisse a tincidunt lacus. Curabitur at urna sagittis, dictum ante sit amet, euismod magna. Sed rutrum massa id tortor commodo, vitae elementum turpis tempus. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean purus turpis, venenatis a ullamcorper nec, tincidunt et massa. Integer posuere quam rutrum arcu vehicula imperdiet. Mauris ullamcorper quam vitae purus congue, quis euismod magna eleifend. Vestibulum semper vel augue eget tincidunt. Fusce eget justo sodales, dapibus odio eu, ultrices lorem. Duis condimentum lorem id eros commodo, in facilisis mauris scelerisque. Morbi sed auctor leo. Nullam volutpat a lacus quis pharetra. Nulla congue rutrum magna a ornare.&lt;/p&gt;
-
-&lt;p&gt;Aliquam in turpis accumsan, malesuada nibh ut, hendrerit justo. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Quisque sed erat nec justo posuere suscipit. Donec ut efficitur arcu, in malesuada neque. Nunc dignissim nisl massa, id vulputate nunc pretium nec. Quisque eget urna in risus suscipit ultricies. Pellentesque odio odio, tincidunt in eleifend sed, posuere a diam. Nam gravida nisl convallis semper elementum. Morbi vitae felis faucibus, vulputate orci placerat, aliquet nisi. Aliquam erat volutpat. Maecenas sagittis pulvinar purus, sed porta quam laoreet at.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&#34;TACC Craigslist scraper - Documentation.pdf&#34; target=&#34;_blank&#34;&gt;Documentation for the scraper&lt;/a&gt;&lt;/p&gt;
 </description>
     </item>
     
