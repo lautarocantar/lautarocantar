@@ -1,0 +1,366 @@
+---
+title: "Una API de Normalización y Geolocalización"
+author: ''
+date: '2019-11-06'
+categories: []
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+lastmod: '2019-11-06T20:51:32-03:00'
+projects: []
+slug: una-api-de-normalización-y-geolocalización
+subtitle: ''
+summary: ''
+tags:
+- radios censales
+- Tutorial
+- georef
+- rstats
+- R
+authors: []
+---
+
+
+
+<p>Hagamos un breve ejercicio: con un lápiz y papel escribamos todas las variantes de, por ejemplo, una provincia de nuestra elección. Esta es mi lista:</p>
+<ul>
+<li>Buenos Aires</li>
+<li>Prov. de Bs. As.</li>
+<li>PBA</li>
+<li>Bs. As.</li>
+<li>B. Aires</li>
+</ul>
+<p>Para el ojo humano todas las variantes hacen referencia a la <strong>Provincia de Buenos Aires</strong>. Sin embargo, para los sistemas informáticos, son todas provincias diferentes. La falta de normalización de los nombres de calles, localidades, departamentos y provincias produce un serio problema.</p>
+<p>Esto genera un nuevo desafío: ¿cómo hacemos para que nuestro sistema informático las reconozcan como una misma? Para solucionar este problema, la <a href="datos.gob.ar">Dirección Nacional de Datos Abiertos</a> creó una herramienta que permite <strong>normalizar y codificar los nombres de unidades territoriales de la Argentina</strong> (provincias, departamentos, municipios y localidades) y geolocalizar direcciones.</p>
+<p>El <strong>Servicio de Normalización de Datos Geográficos</strong> es una API REST. Una API es una interfaz de programación de aplicaciones<a href="#fn1" class="footnoteRef" id="fnref1"><sup>1</sup></a>, un conjunto de rutinas que provee acceso a funciones de un determinado software. Por ejemplo, cuando buscamos una dirección en el mapa de nuestros celulares, por detrás se está realizando una consulta a una API.</p>
+<p>Supongamos que queremos consultar los departamentos de la provincia de Córdoba. A través de una consulta web, la API de GeoRef nos devuelve determinada información. Veamos, por ejemplo, la siguiente consulta.</p>
+<p><a href="https://apis.datos.gob.ar/georef/api/departamentos?formato=csv&amp;provincia=cordoba&amp;max=10" class="uri">https://apis.datos.gob.ar/georef/api/departamentos?formato=csv&amp;provincia=cordoba&amp;max=10</a></p>
+<p>El resultado es el siguiente:</p>
+<div class="figure">
+<img src="/post/2019-11-06-una-api-de-normalización-y-geolocalización_files/descarga_api.png" />
+
+</div>
+<p>¿Qué significa cada uno de los términos que estamos utilizando? Es necesario hacer la siguiente aclaración: los parámetros empiezan después del <strong>?</strong> y se separan por <strong>&amp;</strong>. Entonces, ¿qué estamos consultando?</p>
+<ul>
+<li><code>https://apis.datos.gob.ar/georef/api/</code>: dirección básica</li>
+<li><code>departamentos</code>: unidad geográfica que nos interesa</li>
+<li><code>?formato=csv</code>: formato en qué queremos que nos brinde los dato</li>
+<li><code>&amp;provincia=cordoba</code>: provincia de la que estamos interesados consultar</li>
+<li><code>&amp;max=10</code>: cantidad máxima de registro que nos interesa (esto se puede cambiar)</li>
+</ul>
+<p>¿Te estás preguntando cómo funciona la API? Recibe un texto y lo divide según nombre y número. Luego compara el texto con el listado de textos que están en la base de datos y busca mejor aproximación<a href="#fn2" class="footnoteRef" id="fnref2"><sup>2</sup></a></p>
+<p>El Servicio de Normalización de Datos Geográficos, o la <em>API de GeoRef</em>, tiene varios servicios. Nosotros vamos a revisar los siguientes: <em>normalizar nombres de unidades territoriales</em> y <em>normalizar direcciones</em>. Te invito a revisar la <a href="https://datosgobar.github.io/georef-ar-api/">documentación sobre la API</a> para conocer más en detalle todas las opciones y variantes.</p>
+<div id="georef-en-r" class="section level3">
+<h3>GeoRef en R</h3>
+<p>Para trabajar con la API de GeoRef, vamos a utilizar el paquete <a href="https://github.com/pdelboca/georefar"><code>georefar</code></a><a href="#fn3" class="footnoteRef" id="fnref3"><sup>3</sup></a>, desarrollado por <a href="https://twitter.com/pdelboca">Patricio Del Boca</a>. Dado que este paquete no se encuentra disponible en CRAN, para instalarlo hay que utlizar un paquete intermedio llamado <code>devtools</code><a href="#fn4" class="footnoteRef" id="fnref4"><sup>4</sup></a>.</p>
+<pre class="r"><code># Instalacion del paquete &quot;georefar&quot;
+# install.packages(&quot;devtools&quot;)
+# devtools::install_github(&quot;pdelboca/georefar&quot;)
+
+# Cargamos el paqute &quot;georefar&quot;
+library(georefar)
+library(tidyverse)</code></pre>
+<p><code>georefar</code> hace que las consultas a la API sean más sencillas. Por ejemplo, utilizando la función <code>get_departamentos()</code>, obtendremos la misma información que anteriormente:</p>
+<pre class="r"><code>get_departamentos(provincia = &quot;cordoba&quot;,
+                  max = 10) %&gt;% 
+  knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="right">centroide_lat</th>
+<th align="right">centroide_lon</th>
+<th align="left">id</th>
+<th align="left">nombre</th>
+<th align="left">provincia_id</th>
+<th align="left">provincia_nombre</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="right">-31.71120</td>
+<td align="right">-64.30706</td>
+<td align="left">14147</td>
+<td align="left">Santa María</td>
+<td align="left">14</td>
+<td align="left">Córdoba</td>
+</tr>
+<tr class="even">
+<td align="right">-31.70779</td>
+<td align="right">-65.15641</td>
+<td align="left">14126</td>
+<td align="left">San Alberto</td>
+<td align="left">14</td>
+<td align="left">Córdoba</td>
+</tr>
+<tr class="odd">
+<td align="right">-31.73303</td>
+<td align="right">-63.47692</td>
+<td align="left">14119</td>
+<td align="left">Río Segundo</td>
+<td align="left">14</td>
+<td align="left">Córdoba</td>
+</tr>
+<tr class="even">
+<td align="right">-31.23940</td>
+<td align="right">-62.52603</td>
+<td align="left">14140</td>
+<td align="left">San Justo</td>
+<td align="left">14</td>
+<td align="left">Córdoba</td>
+</tr>
+<tr class="odd">
+<td align="right">-32.87845</td>
+<td align="right">-62.79143</td>
+<td align="left">14182</td>
+<td align="left">Unión</td>
+<td align="left">14</td>
+<td align="left">Córdoba</td>
+</tr>
+<tr class="even">
+<td align="right">-32.28771</td>
+<td align="right">-63.77925</td>
+<td align="left">14161</td>
+<td align="left">Tercero Arriba</td>
+<td align="left">14</td>
+<td align="left">Córdoba</td>
+</tr>
+<tr class="odd">
+<td align="right">-33.33080</td>
+<td align="right">-64.49418</td>
+<td align="left">14098</td>
+<td align="left">Río Cuarto</td>
+<td align="left">14</td>
+<td align="left">Córdoba</td>
+</tr>
+<tr class="even">
+<td align="right">-34.61707</td>
+<td align="right">-64.37876</td>
+<td align="left">14035</td>
+<td align="left">General Roca</td>
+<td align="left">14</td>
+<td align="left">Córdoba</td>
+</tr>
+<tr class="odd">
+<td align="right">-31.41707</td>
+<td align="right">-64.18322</td>
+<td align="left">14014</td>
+<td align="left">Capital</td>
+<td align="left">14</td>
+<td align="left">Córdoba</td>
+</tr>
+<tr class="even">
+<td align="right">-33.32945</td>
+<td align="right">-63.60634</td>
+<td align="left">14056</td>
+<td align="left">Juárez Celman</td>
+<td align="left">14</td>
+<td align="left">Córdoba</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div id="georef-para-normalizar-nombres" class="section level3">
+<h3>GeoRef para normalizar nombres</h3>
+<p>Para normalizar nombres de unidades territoriales, vamos a crear un dataset muy sencillo que tendrá únicamente dos columnas: <code>provincia</code> y <code>departamento</code>. En ambas columnas vamos a escribir mal los nombres de forma intencional.</p>
+<pre class="r"><code># Armo dos categorias: Provincia y Departamento
+provincia &lt;- c(&quot;buenos aires&quot;, &quot;Buenos Aires&quot;, &quot;bsas&quot;, &quot;bs as&quot;, &quot;PBA&quot;, &quot;Provincia de Buenos Aires&quot;)
+departamento &lt;- c(&quot;olavarria&quot;, &quot;Olavarria&quot;, &quot;olaBariaa&quot;, &quot;la plata&quot;, &quot;LA PLATA&quot;, &quot;La PPlata&quot;)
+
+# Armo un dataframe con ambas categorias
+PBA &lt;- data.frame(provincia, departamento)
+
+PBA %&gt;% knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">provincia</th>
+<th align="left">departamento</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">buenos aires</td>
+<td align="left">olavarria</td>
+</tr>
+<tr class="even">
+<td align="left">Buenos Aires</td>
+<td align="left">Olavarria</td>
+</tr>
+<tr class="odd">
+<td align="left">bsas</td>
+<td align="left">olaBariaa</td>
+</tr>
+<tr class="even">
+<td align="left">bs as</td>
+<td align="left">la plata</td>
+</tr>
+<tr class="odd">
+<td align="left">PBA</td>
+<td align="left">LA PLATA</td>
+</tr>
+<tr class="even">
+<td align="left">Provincia de Buenos Aires</td>
+<td align="left">La PPlata</td>
+</tr>
+</tbody>
+</table>
+<p>Primero arranquemos normalizando los nombres de las provincias. Para eso hacemos un <em>loop</em> que recorra cada una de las observaciones, realice una consulta y nos devuelva el nombre normalizado de la provincia en una columna nueva a la que llamaremos <code>provincia_normalizada</code>.</p>
+<pre class="r"><code># Normalizando Provincia
+for (i in 1:nrow(PBA)) {
+  prov &lt;- PBA$provincia[i]
+  provincia.normalizada &lt;- as.character(get_provincias(nombre = prov, max = 1)[4])
+  PBA$provincia_normalizada[i] &lt;- provincia.normalizada
+}</code></pre>
+<p>Hagamos lo mismo con la columna <code>departamento</code>.</p>
+<pre class="r"><code># Normalizando Departamento
+for (i in 1:nrow(PBA)) {
+  dpto &lt;- PBA$departamento[i]
+  dpto.normalizada &lt;- as.character(get_departamentos(nombre = dpto, max = 1)[4])
+  PBA$departamento_normalizada[i] &lt;- dpto.normalizada
+}</code></pre>
+<p>Veamos cómo queda finalmente nuestro dataset con nuestras nuevas columnas <code>provincia_normalizada</code> y <code>departamento_normalizada</code>.</p>
+<pre class="r"><code>PBA %&gt;% knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">provincia</th>
+<th align="left">departamento</th>
+<th align="left">provincia_normalizada</th>
+<th align="left">departamento_normalizada</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">buenos aires</td>
+<td align="left">olavarria</td>
+<td align="left">Buenos Aires</td>
+<td align="left">Olavarría</td>
+</tr>
+<tr class="even">
+<td align="left">Buenos Aires</td>
+<td align="left">Olavarria</td>
+<td align="left">Buenos Aires</td>
+<td align="left">Olavarría</td>
+</tr>
+<tr class="odd">
+<td align="left">bsas</td>
+<td align="left">olaBariaa</td>
+<td align="left">Buenos Aires</td>
+<td align="left">NULL</td>
+</tr>
+<tr class="even">
+<td align="left">bs as</td>
+<td align="left">la plata</td>
+<td align="left">Buenos Aires</td>
+<td align="left">La Plata</td>
+</tr>
+<tr class="odd">
+<td align="left">PBA</td>
+<td align="left">LA PLATA</td>
+<td align="left">NULL</td>
+<td align="left">La Plata</td>
+</tr>
+<tr class="even">
+<td align="left">Provincia de Buenos Aires</td>
+<td align="left">La PPlata</td>
+<td align="left">NULL</td>
+<td align="left">La Plata</td>
+</tr>
+</tbody>
+</table>
+<p>Como podemos ver, la API no pudo normalizar las últimas dos observaciones de <code>provincia</code> ni <code>olaBariaa</code> debido a que se alejan mucho de la versión que existe en la base de datos de nombres de provincias. Sin embargo, vemos que no tiene ningún problema en discriminar mayúsculas, minúsculas y palabras mal escritas.</p>
+</div>
+<div id="georef-para-normalizar-direcciones" class="section level3">
+<h3>GeoRef para normalizar direcciones</h3>
+<p>La API de GeoRef también se puede utilizar para normalizar direcciones. Por ejemplo, aquí vamos a tratar de normalizar la dirección “Boedo 202, Lomas de Zamora”.</p>
+<pre class="r"><code>boedo &lt;- normalizar_direccion(&quot;BOEDO 00202, LOMAS DE ZAMORA&quot;, departamento = &quot;06490&quot;)</code></pre>
+<pre><code>## No encoding supplied: defaulting to UTF-8.</code></pre>
+<pre class="r"><code>boedo %&gt;% knitr::kable()</code></pre>
+<table>
+<thead>
+<tr class="header">
+<th align="left">altura_unidad</th>
+<th align="right">altura_valor</th>
+<th align="left">calle_categoria</th>
+<th align="left">calle_cruce_1_categoria</th>
+<th align="left">calle_cruce_1_id</th>
+<th align="left">calle_cruce_1_nombre</th>
+<th align="left">calle_cruce_2_categoria</th>
+<th align="left">calle_cruce_2_id</th>
+<th align="left">calle_cruce_2_nombre</th>
+<th align="left">calle_id</th>
+<th align="left">calle_nombre</th>
+<th align="left">departamento_id</th>
+<th align="left">departamento_nombre</th>
+<th align="left">localidad_censal_id</th>
+<th align="left">localidad_censal_nombre</th>
+<th align="left">nomenclatura</th>
+<th align="left">piso</th>
+<th align="left">provincia_id</th>
+<th align="left">provincia_nombre</th>
+<th align="right">ubicacion_lat</th>
+<th align="right">ubicacion_lon</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td align="left">NA</td>
+<td align="right">202</td>
+<td align="left">CALLE</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">0649001004335</td>
+<td align="left">MARIANO BOEDO</td>
+<td align="left">06490</td>
+<td align="left">Lomas de Zamora</td>
+<td align="left">06490010</td>
+<td align="left">Lomas de Zamora</td>
+<td align="left">MARIANO BOEDO 202, Lomas de Zamora, Buenos Aires</td>
+<td align="left">NA</td>
+<td align="left">06</td>
+<td align="left">Buenos Aires</td>
+<td align="right">-34.75940</td>
+<td align="right">-58.40087</td>
+</tr>
+<tr class="even">
+<td align="left">NA</td>
+<td align="right">202</td>
+<td align="left">CALLE</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">NA</td>
+<td align="left">0649001002855</td>
+<td align="left">FELIPE BOERO</td>
+<td align="left">06490</td>
+<td align="left">Lomas de Zamora</td>
+<td align="left">06490010</td>
+<td align="left">Lomas de Zamora</td>
+<td align="left">FELIPE BOERO 202, Lomas de Zamora, Buenos Aires</td>
+<td align="left">NA</td>
+<td align="left">06</td>
+<td align="left">Buenos Aires</td>
+<td align="right">-34.75396</td>
+<td align="right">-58.42918</td>
+</tr>
+</tbody>
+</table>
+<p>En este caso, las mejores aproximaciones son <em>BOEDO</em> y <em>BOERO</em>. Luego, busca el número y asigna el segmento de las cuadras. Si tiene Latitud y Longitud, también lo provee.</p>
+</div>
+<div class="footnotes">
+<hr />
+<ol>
+<li id="fn1"><p>La sigla API proviene del inglés <em>Application Programming Interface</em><a href="#fnref1">↩</a></p></li>
+<li id="fn2"><p>Si la palabra tiene 3 o menos caracteres, la API busca la el nombre exacto, si la palabra tiene entre 4 y 7 caracteres, la API permite una transformación y si tiene más de 8, permite 2 transformaciones.<a href="#fnref2">↩</a></p></li>
+<li id="fn3"><p>Copyright (c) 2018 Patricio Del Boca<a href="#fnref3">↩</a></p></li>
+<li id="fn4"><p>Es probable que tengas que instalarlo en tu computadora<a href="#fnref4">↩</a></p></li>
+</ol>
+</div>

@@ -34,31 +34,54 @@
   </url>
   
   <url>
-    <loc>/post/construyendo-informacion-sobre-radios-cendales/</loc>
-    <lastmod>2019-07-24T16:39:10-03:00</lastmod>
+    <loc>/post/</loc>
+    <lastmod>2019-11-06T20:51:32-03:00</lastmod>
   </url>
   
   <url>
-    <loc>/post/</loc>
-    <lastmod>2019-07-24T16:39:10-03:00</lastmod>
+    <loc>/tags/r/</loc>
+    <lastmod>2019-11-06T20:51:32-03:00</lastmod>
+    <priority>0</priority>
   </url>
   
   <url>
     <loc>/tags/</loc>
-    <lastmod>2019-07-24T16:39:10-03:00</lastmod>
+    <lastmod>2019-11-06T20:51:32-03:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/tags/tutorial/</loc>
-    <lastmod>2019-07-24T16:39:10-03:00</lastmod>
+    <lastmod>2019-11-06T20:51:32-03:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/post/una-api-de-normalizaci%C3%B3n-y-geolocalizaci%C3%B3n/</loc>
+    <lastmod>2019-11-06T20:51:32-03:00</lastmod>
+  </url>
+  
+  <url>
+    <loc>/tags/georef/</loc>
+    <lastmod>2019-11-06T20:51:32-03:00</lastmod>
     <priority>0</priority>
   </url>
   
   <url>
     <loc>/tags/radios-censales/</loc>
-    <lastmod>2019-07-24T16:39:10-03:00</lastmod>
+    <lastmod>2019-11-06T20:51:32-03:00</lastmod>
     <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/tags/rstats/</loc>
+    <lastmod>2019-11-06T20:51:32-03:00</lastmod>
+    <priority>0</priority>
+  </url>
+  
+  <url>
+    <loc>/post/construyendo-informacion-sobre-radios-cendales/</loc>
+    <lastmod>2019-07-24T16:39:10-03:00</lastmod>
   </url>
   
   <url>

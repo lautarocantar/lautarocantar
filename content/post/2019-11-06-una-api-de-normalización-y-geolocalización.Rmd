@@ -1,0 +1,136 @@
+---
+title: "Una API de Normalización y Geolocalización"
+author: ''
+date: '2019-11-06'
+categories: []
+featured: no
+image:
+  caption: ''
+  focal_point: ''
+  preview_only: no
+lastmod: '2019-11-06T20:51:32-03:00'
+projects: []
+slug: una-api-de-normalización-y-geolocalización
+subtitle: ''
+summary: ''
+tags:
+- radios censales
+- Tutorial
+- georef
+- rstats
+- R
+authors: []
+---
+
+Hagamos un breve ejercicio: con un lápiz y papel escribamos todas las variantes de, por ejemplo, una provincia de nuestra elección. Esta es mi lista: 
+
+* Buenos Aires
+* Prov. de Bs. As. 
+* PBA
+* Bs. As.
+* B. Aires
+
+Para el ojo humano todas las variantes hacen referencia a la **Provincia de Buenos Aires**. Sin embargo, para los sistemas informáticos, son todas provincias diferentes. La falta de normalización de los nombres de calles, localidades, departamentos y provincias produce un serio problema.
+
+Esto genera un nuevo desafío: ¿cómo hacemos para que nuestro sistema informático las reconozcan como una misma? Para solucionar este problema, la [Dirección Nacional de Datos Abiertos](datos.gob.ar) creó una herramienta que permite **normalizar y codificar los nombres de unidades territoriales de la Argentina** (provincias, departamentos, municipios y localidades) y geolocalizar direcciones.
+
+El **Servicio de Normalización de Datos Geográficos** es una API REST. Una API es una interfaz de programación de aplicaciones^[La sigla API proviene del inglés _Application Programming Interface_], un conjunto de rutinas que provee acceso a funciones de un determinado software. Por ejemplo, cuando buscamos una dirección en el mapa de nuestros celulares, por detrás se está realizando una consulta a una API.
+
+Supongamos que queremos consultar los departamentos de la provincia de Córdoba. A través de una consulta web, la API de GeoRef nos devuelve determinada información. Veamos, por ejemplo, la siguiente consulta.
+
+https://apis.datos.gob.ar/georef/api/departamentos?formato=csv&provincia=cordoba&max=10
+
+El resultado es el siguiente:
+
+![](/post/2019-11-06-una-api-de-normalización-y-geolocalización_files/descarga_api.png)
+
+¿Qué significa cada uno de los términos que estamos utilizando? Es necesario hacer la siguiente aclaración: los parámetros empiezan después del **?** y se separan por **&**. Entonces, ¿qué estamos consultando?
+
+* `https://apis.datos.gob.ar/georef/api/`: dirección básica
+* `departamentos`: unidad geográfica que nos interesa
+* `?formato=csv`: formato en qué queremos que nos brinde los dato
+* `&provincia=cordoba`: provincia de la que estamos interesados consultar
+* `&max=10`: cantidad máxima de registro que nos interesa (esto se puede cambiar)
+
+¿Te estás preguntando cómo funciona la API? Recibe un texto y lo divide según nombre y número. Luego compara el texto con el listado de textos que están en la base de datos y busca mejor aproximación^[Si la palabra tiene 3 o menos caracteres, la API busca la el nombre exacto, si la palabra tiene entre 4 y 7 caracteres, la API permite una transformación y si tiene más de 8, permite 2 transformaciones.]
+
+El Servicio de Normalización de Datos Geográficos, o la _API de GeoRef_, tiene varios servicios. Nosotros vamos a revisar los siguientes: _normalizar nombres de unidades territoriales_ y _normalizar direcciones_. Te invito a revisar la [documentación sobre la API](https://datosgobar.github.io/georef-ar-api/) para conocer más en detalle todas las opciones y variantes. 
+
+### GeoRef en R
+
+Para trabajar con la API de GeoRef, vamos a utilizar el paquete [`georefar`](https://github.com/pdelboca/georefar)^[Copyright (c) 2018 Patricio Del Boca], desarrollado por [Patricio Del Boca](https://twitter.com/pdelboca). Dado que este paquete no se encuentra disponible en CRAN, para instalarlo hay que utlizar un paquete intermedio llamado `devtools`^[Es probable que tengas que instalarlo en tu computadora].
+
+```{r, message=FALSE}
+# Instalacion del paquete "georefar"
+# install.packages("devtools")
+# devtools::install_github("pdelboca/georefar")
+
+# Cargamos el paqute "georefar"
+library(georefar)
+library(tidyverse)
+```
+
+`georefar` hace que las consultas a la API sean más sencillas. Por ejemplo, utilizando la función `get_departamentos()`, obtendremos la misma información que anteriormente:
+
+```{r, message=FALSE}
+get_departamentos(provincia = "cordoba",
+                  max = 10) %>% 
+  knitr::kable()
+```
+
+### GeoRef para normalizar nombres
+
+Para normalizar nombres de unidades territoriales, vamos a crear un dataset muy sencillo que tendrá únicamente dos columnas: `provincia` y `departamento`. En ambas columnas vamos a escribir mal los nombres de forma intencional.
+
+```{r}
+# Armo dos categorias: Provincia y Departamento
+provincia <- c("buenos aires", "Buenos Aires", "bsas", "bs as", "PBA", "Provincia de Buenos Aires")
+departamento <- c("olavarria", "Olavarria", "olaBariaa", "la plata", "LA PLATA", "La PPlata")
+
+# Armo un dataframe con ambas categorias
+PBA <- data.frame(provincia, departamento)
+
+PBA %>% knitr::kable()
+```
+
+Primero arranquemos normalizando los nombres de las provincias. Para eso hacemos un _loop_ que recorra cada una de las observaciones, realice una consulta y nos devuelva el nombre normalizado de la provincia en una columna nueva a la que llamaremos `provincia_normalizada`.
+
+```{r, message=FALSE}
+# Normalizando Provincia
+for (i in 1:nrow(PBA)) {
+  prov <- PBA$provincia[i]
+  provincia.normalizada <- as.character(get_provincias(nombre = prov, max = 1)[4])
+  PBA$provincia_normalizada[i] <- provincia.normalizada
+}
+```
+
+Hagamos lo mismo con la columna `departamento`.
+
+```{r, message=FALSE}
+# Normalizando Departamento
+for (i in 1:nrow(PBA)) {
+  dpto <- PBA$departamento[i]
+  dpto.normalizada <- as.character(get_departamentos(nombre = dpto, max = 1)[4])
+  PBA$departamento_normalizada[i] <- dpto.normalizada
+}
+```
+
+Veamos cómo queda finalmente nuestro dataset con nuestras nuevas columnas  `provincia_normalizada` y  `departamento_normalizada`.
+
+```{r}
+PBA %>% knitr::kable()
+```
+
+Como podemos ver, la API no pudo normalizar las últimas dos observaciones de `provincia` ni `olaBariaa` debido a que se alejan mucho de la versión que existe en la base de datos de nombres de provincias. Sin embargo, vemos que no tiene ningún problema en discriminar mayúsculas, minúsculas y palabras mal escritas.
+
+### GeoRef para normalizar direcciones
+
+La API de GeoRef también se puede utilizar para normalizar direcciones. Por ejemplo, aquí vamos a tratar de normalizar la dirección "Boedo 202, Lomas de Zamora".
+
+```{r}
+boedo <- normalizar_direccion("BOEDO 00202, LOMAS DE ZAMORA", departamento = "06490")
+boedo %>% knitr::kable()
+```
+
+En este caso, las mejores  aproximaciones son _BOEDO_ y _BOERO_. Luego, busca el número y asigna el segmento de las cuadras. Si tiene Latitud y Longitud, también lo provee.
+
